@@ -430,7 +430,7 @@
     
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>servlets.LoginServlet</servlet-class>
+        <servlet-class>com.zonajava.servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -439,7 +439,7 @@
 
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>servlets.LogoutServlet</servlet-class>
+        <servlet-class>com.zonajava.servlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
@@ -448,7 +448,7 @@
 
     <servlet>
         <servlet-name>ChangePasswordServlet</servlet-name>
-        <servlet-class>servlets.ChangePasswordServlet</servlet-class>
+        <servlet-class>com.zonajava.servlets.ChangePasswordServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ChangePasswordServlet</servlet-name>
@@ -456,7 +456,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
     <session-config>
