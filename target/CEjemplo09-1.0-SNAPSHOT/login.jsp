@@ -1,14 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    String redirect = request.getParameter("redirect");
+    if (redirect == null) redirect = "admin.jsp";
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Acceso al Dominio | Jhon Contreras</title>
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Símbolo flotante en esquina */
         .curse-symbol-float {
             position: fixed;
             top: 30px;
@@ -28,7 +31,6 @@
             50% { transform: translateY(-15px) rotate(5deg); opacity: 0.25; }
         }
 
-        /* Alternativa: símbolo pequeño al lado del título */
         .brand-title-wrapper {
             display: flex;
             align-items: center;
@@ -49,29 +51,55 @@
             50% { opacity: 1; transform: scale(1.1); }
         }
 
-        /* Ocultar el símbolo original del brand */
         .login-brand .curse-symbol {
             display: none;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            color: var(--jjk-text-dim, #C0C0D0);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border: 1px solid rgba(139,0,0,0.3);
+            border-radius: 8px;
+            background: rgba(10,10,15,0.8);
+        }
+
+        .back-link:hover {
+            color: var(--jjk-sukuna-bright, #FF1A1A);
+            border-color: var(--jjk-sukuna-bright, #FF1A1A);
+            box-shadow: 0 0 15px rgba(139,0,0,0.2);
         }
     </style>
 </head>
 <body>
+    <a href="index.jsp" class="back-link">
+        <i class="fas fa-arrow-left"></i> Volver al Portafolio
+    </a>
+
     <canvas id="curseCanvas"></canvas>
     <div class="particles-container" id="particles"></div>
     <div class="domain-aura"></div>
     <div class="glitch-overlay"></div>
 
-    <!-- Símbolo flotante en esquina superior derecha -->
     <div class="curse-symbol-float">呪</div>
 
     <div class="login-wrapper">
         <div class="login-brand">
-            <!-- Título con símbolo al lado -->
             <div class="brand-title-wrapper">
                 <h1 class="brand-title">DOMINIO MALDITO</h1>
                 <span class="curse-symbol-inline">呪</span>
             </div>
-            <p class="brand-subtitle">Sistema de Acceso Restringido</p>
+            <p class="brand-subtitle">Panel de Administración - Solo Personal Autorizado</p>
         </div>
 
         <div class="login-card" id="loginCard">
@@ -81,10 +109,12 @@
                     <i class="fas fa-fingerprint"></i>
                 </div>
                 <h2>INICIAR SESIÓN</h2>
-                <p>Identifícate para acceder al portafolio</p>
+                <p>Acceso restringido al panel de admin</p>
             </div>
 
             <form action="LoginServlet" method="POST" class="login-form" id="loginForm">
+                <input type="hidden" name="redirect" value="<%= redirect %>">
+
                 <div class="input-group">
                     <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
                     <div class="input-wrapper">

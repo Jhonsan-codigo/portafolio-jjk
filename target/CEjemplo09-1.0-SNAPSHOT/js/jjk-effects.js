@@ -545,3 +545,119 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.jjkAudio = jjkAudio;
 window.openDomain = openDomain;
+
+// =====================================================
+// RESPONSIVE DESIGN - AGREGADO SIN MODIFICAR JS ORIGINAL
+// =====================================================
+
+// Detectar si es móvil
+function isMobile() {
+    return window.innerWidth <= 768 || 'ontouchstart' in window;
+}
+
+// Ajustar sidebar en móvil
+function initMobileSidebar() {
+    const sidebar = document.querySelector('.jjk-sidebar');
+    const toggle = document.querySelector('.jjk-sidebar-toggle');
+
+    if (!sidebar || !toggle) return;
+
+    // En móvil, el sidebar se comporta diferente
+    if (isMobile()) {
+        // Cerrar sidebar al hacer click fuera
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target)) {
+                sidebar.style.width = '';
+                sidebar.classList.remove('expanded');
+            }
+        });
+
+        // Toggle funciona como click en móvil
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('expanded');
+            if (sidebar.classList.contains('expanded')) {
+                sidebar.style.width = '260px';
+            } else {
+                sidebar.style.width = '';
+            }
+        });
+    }
+}
+
+// Ajustar video en móvil
+function initMobileVideo() {
+    const video = document.querySelector('.video-bg');
+    if (video && isMobile()) {
+        // En móvil reducir calidad si es necesario
+        video.setAttribute('playsinline', '');
+        video.setAttribute('muted', '');
+    }
+}
+
+// Ajustar altura del viewport en móvil (problema con la barra de navegación)
+function initViewportHeight() {
+    const setVH = () => {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    setVH();
+    window.addEventListener('resize', setVH);
+}
+
+// Smooth scroll para anclas en móvil
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const offset = isMobile() ? 80 : 100;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+            // Cerrar sidebar si está abierto
+            const sidebar = document.querySelector('.jjk-sidebar');
+            if (sidebar && sidebar.classList.contains('expanded')) {
+                sidebar.classList.remove('expanded');
+                sidebar.style.width = '';
+            }
+        });
+    });
+}
+
+// Prevenir zoom en inputs en iOS
+function initIOSZoom() {
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        document.querySelectorAll('input, select, textarea').forEach(el => {
+            el.addEventListener('focus', () => {
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+            });
+            el.addEventListener('blur', () => {
+                document.body.style.position = '';
+                document.body.style.width = '';
+            });
+        });
+    }
+}
+
+// Inicializar todo el responsive
+document.addEventListener('DOMContentLoaded', () => {
+    initMobileSidebar();
+    initMobileVideo();
+    initViewportHeight();
+    initSmoothScroll();
+    initIOSZoom();
+});
+
+// Recalcular al redimensionar
+window.addEventListener('resize', () => {
+    // Forzar recálculo de layout
+    document.body.style.display = 'none';
+    document.body.offsetHeight; // Trigger reflow
+    document.body.style.display = '';
+});

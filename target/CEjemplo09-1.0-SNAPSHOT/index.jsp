@@ -1,18 +1,9 @@
-<%
-    if (session == null || session.getAttribute("usuario") == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-    String usuario = (String) session.getAttribute("usuario");
-    String rol = (String) session.getAttribute("rol");
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Portafolio Jhon Contreras | Jujutsu Kaisen</title>
     <link rel="stylesheet" href="css/jjk-theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -28,7 +19,7 @@
     <!-- Video de fondo HD -->
     <div class="video-bg-container">
         <video class="video-bg" autoplay muted loop playsinline>
-            <source src="assets/VS.mp4" type="video/mp4">
+            <source src="assets/Sukuna.mp4" type="video/mp4">
         </video>
     </div>
 
@@ -37,7 +28,7 @@
         <div class="jjk-sidebar-toggle">
             <i class="fas fa-bars"></i>
         </div>
-        
+
         <div class="jjk-nav">
             <a href="#inicio" class="jjk-nav-item active">
                 <i class="fas fa-home"></i>
@@ -55,8 +46,13 @@
                 <i class="fas fa-envelope"></i>
                 <span class="jjk-nav-text">Contacto</span>
             </a>
+            <!-- Link al panel admin (solo visible si sabes la URL) -->
+            <a href="admin.jsp" class="jjk-nav-item" style="margin-top: 20px; border-top: 1px solid rgba(139,0,0,0.2); padding-top: 15px;">
+                <i class="fas fa-cog"></i>
+                <span class="jjk-nav-text">Admin</span>
+            </a>
         </div>
-        
+
         <!-- ====== REPRODUCTOR DE MUSICA ====== -->
         <div class="jjk-music-sidebar">
             <div class="music-equalizer" id="musicVisualizer">
@@ -69,31 +65,7 @@
             <input type="range" class="music-volume-slider" min="0" max="1" step="0.1" value="0.3" onchange="setVolume(this.value)" title="Volumen">
         </div>
         <!-- ====== FIN REPRODUCTOR ====== -->
-        
-        <!-- ===== PANEL DE USUARIO - PARTE INFERIOR DE SIDEBAR ===== -->
-        <div style="margin-top:auto;padding:10px 8px;border-top:1px solid rgba(139,0,0,0.2);">
-            <!-- Info usuario -->
-            <div class="jjk-nav-item" style="cursor:default;margin-bottom:4px;" onclick="event.preventDefault();">
-                <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#8B0000,#FF1A1A);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#FFD700;border:1px solid rgba(255,26,26,0.3);flex-shrink:0;">
-                    <i class="fas fa-user"></i>
-                </div>
-                <span class="jjk-nav-text" style="font-size:0.7rem;color:#FF1A1A;font-weight:600;"><%= usuario %></span>
-            </div>
-            
-            <!-- Botón Cambiar Pass -->
-            <a href="ChangePasswordServlet" class="jjk-nav-item nav-link-servlet" style="margin:2px 0;padding:5px 0;">
-                <i class="fas fa-key" style="font-size:0.75rem;color:#aaa;"></i>
-                <span class="jjk-nav-text" style="font-size:0.6rem;color:#aaa;">Pass</span>
-            </a>
-            
-            <!-- Botón Salir -->
-            <a href="LogoutServlet" class="jjk-nav-item nav-link-servlet" style="margin:2px 0;padding:5px 0;">
-                <i class="fas fa-power-off" style="font-size:0.75rem;color:#aaa;"></i>
-                <span class="jjk-nav-text" style="font-size:0.6rem;color:#aaa;">Salir</span>
-            </a>
-        </div>
-        <!-- ===== FIN PANEL DE USUARIO ===== -->
-        
+
         <div class="jjk-sidebar-footer">
             <div class="curse-mark">呪</div>
         </div>
@@ -101,16 +73,16 @@
 
     <!-- Audio oculto -->
     <audio id="bgMusic" loop>
-        <source src="assets/pelea.mp3" type="audio/mpeg">
+        <source src="assets/openig.mp3" type="audio/mpeg">
         Tu navegador no soporta audio HTML5.
     </audio>
 
     <!-- Logos del instituto -->
     <div class="logo-instituto logo-top-left">
-        <img src="assets/logo1.jpg" alt="Logo IESTP" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-shield-alt\' style=\'color:#FF1A1A; font-size:2.5rem;\'></i>';">
+        <img src="assets/logo1.jpg" alt="Logo IESTP" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class='fas fa-shield-alt' style='color:#FF1A1A; font-size:2.5rem;'></i>';">
     </div>
     <div class="logo-instituto logo-top-right">
-        <img src="assets/logo2.jpg" alt="Logo DPW" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-code\' style=\'color:#FF1A1A; font-size:2.5rem;\'></i>';">
+        <img src="assets/logo2.jpg" alt="Logo DPW" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class='fas fa-code' style='color:#FF1A1A; font-size:2.5rem;'></i>';">
     </div>
 
     <!-- CONTENIDO PRINCIPAL -->
@@ -373,12 +345,12 @@ for(int i = 0; i < semanasData.length; i++) {
         document.querySelectorAll('.jjk-nav-item').forEach(item => {
             item.addEventListener('click', (e) => {
                 const href = item.getAttribute('href');
-                
-                // Si es un enlace a servlet (no empieza con #), dejar que navegue normalmente
+
+                // Si es un enlace a servlet o admin (no empieza con #), dejar que navegue normalmente
                 if (!href || !href.startsWith('#')) {
                     return; // No hacer nada, dejar que el enlace funcione normalmente
                 }
-                
+
                 // Solo para anclas internas (#inicio, #sobre-mi, etc.)
                 e.preventDefault();
                 const target = document.querySelector(href);
@@ -404,7 +376,7 @@ for(int i = 0; i < semanasData.length; i++) {
 
         function toggleMusic() {
             if (!bgMusic) return;
-            
+
             if (isPlaying) {
                 bgMusic.pause();
                 musicBtn.innerHTML = '<i class="fas fa-play"></i>';

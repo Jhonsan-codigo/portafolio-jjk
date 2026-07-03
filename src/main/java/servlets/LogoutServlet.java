@@ -1,21 +1,26 @@
-package servlets;
+package com.zonajava.servlets;
 
 import java.io.IOException;
-import jakarta.servlet.ServletException;        // ← CAMBIADO
-import jakarta.servlet.annotation.WebServlet;   // ← CAMBIADO
-import jakarta.servlet.http.HttpServlet;        // ← CAMBIADO
-import jakarta.servlet.http.HttpServletRequest; // ← CAMBIADO
-import jakarta.servlet.http.HttpServletResponse;  // ← CAMBIADO
-import jakarta.servlet.http.HttpSession;        // ← CAMBIADO
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
+@WebServlet("/LogoutServlet")
 public class LogoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession(false);
-        if (session != null) session.invalidate();
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // Redirigir al login del admin
         response.sendRedirect("login.jsp");
     }
 

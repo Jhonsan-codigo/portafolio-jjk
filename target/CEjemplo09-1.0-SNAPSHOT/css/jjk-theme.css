@@ -1508,3 +1508,357 @@ body {
     cursor: pointer;
     box-shadow: 0 0 8px rgba(139,0,0,0.5);
 }
+
+/* =====================================================
+   RESPONSIVE DESIGN - AGREGADO SIN MODIFICAR CSS ORIGINAL
+   ===================================================== */
+
+/* ===== TABLET (768px - 1024px) ===== */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: clamp(2.5rem, 8vw, 4rem) !important;
+        letter-spacing: 8px !important;
+    }
+    .hero-typing {
+        font-size: 1.1rem !important;
+        letter-spacing: 3px !important;
+    }
+    .hero-desc {
+        font-size: 1rem !important;
+        padding: 0 20px !important;
+    }
+    .about-grid {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+        padding-left: 0 !important;
+        text-align: center !important;
+    }
+    .about-photo {
+        max-width: 300px !important;
+        margin: 0 auto !important;
+    }
+    .about-data {
+        justify-content: center !important;
+    }
+    .skill-grid {
+        justify-content: center !important;
+    }
+    .contact-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .semanas-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* ===== MOBILE (hasta 768px) ===== */
+@media (max-width: 768px) {
+    /* Sidebar */
+    .jjk-sidebar {
+        width: 60px !important;
+    }
+    .jjk-sidebar:hover {
+        width: 220px !important;
+    }
+    .jjk-sidebar-toggle {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 1.1rem !important;
+        margin-bottom: 25px !important;
+    }
+    .jjk-nav-item {
+        padding: 14px 12px !important;
+        gap: 14px !important;
+    }
+    .jjk-nav-item i {
+        font-size: 1.2rem !important;
+        width: 28px !important;
+    }
+
+    /* Main content */
+    .main-content {
+        margin-left: 60px !important;
+    }
+    .hero-section,
+    .about-grid,
+    .semanas-section,
+    .contact-section,
+    .jjk-footer {
+        padding-left: 0 !important;
+    }
+
+    /* Hero */
+    .hero-section {
+        min-height: auto !important;
+        padding: 80px 15px 60px !important;
+    }
+    .hero-content {
+        padding: 20px !important;
+        max-width: 100% !important;
+    }
+    .hero-badge {
+        font-size: 0.7rem !important;
+        padding: 10px 20px !important;
+        letter-spacing: 3px !important;
+        margin-bottom: 20px !important;
+    }
+    .hero-title {
+        font-size: clamp(2rem, 10vw, 3rem) !important;
+        letter-spacing: 5px !important;
+        margin-bottom: 15px !important;
+    }
+    .hero-typing {
+        font-size: 0.9rem !important;
+        letter-spacing: 3px !important;
+        min-height: 30px !important;
+        margin-bottom: 25px !important;
+    }
+    .hero-desc {
+        font-size: 0.9rem !important;
+        line-height: 1.7 !important;
+        margin-bottom: 30px !important;
+        padding: 0 10px !important;
+    }
+    .hero-stats {
+        flex-direction: column !important;
+        gap: 15px !important;
+        margin-bottom: 35px !important;
+    }
+    .stat-item {
+        padding: 20px 30px !important;
+        min-width: auto !important;
+        width: 100% !important;
+        max-width: 200px !important;
+        margin: 0 auto !important;
+    }
+    .stat-number {
+        font-size: 2.5rem !important;
+    }
+    .stat-label {
+        font-size: 0.8rem !important;
+        letter-spacing: 2px !important;
+    }
+    .jjk-btn {
+        padding: 14px 28px !important;
+        font-size: 0.85rem !important;
+        letter-spacing: 2px !important;
+    }
+
+    /* About */
+    .jjk-section {
+        padding: 60px 0 !important;
+    }
+    .jjk-container {
+        padding: 0 15px !important;
+    }
+    .about-info h2 {
+        font-size: 1.8rem !important;
+    }
+    .about-info p {
+        font-size: 0.95rem !important;
+    }
+    .about-data {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    .about-data-item {
+        justify-content: center !important;
+        font-size: 0.9rem !important;
+    }
+    .skill-tag {
+        padding: 8px 16px !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Semanas */
+    .semanas-section {
+        padding-top: 60px !important;
+    }
+    .semanas-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .semana-card {
+        border-radius: 16px !important;
+    }
+    .semana-image {
+        height: 160px !important;
+    }
+    .semana-content {
+        padding: 20px !important;
+    }
+    .semana-num {
+        font-size: 2.5rem !important;
+    }
+    .semana-icon {
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 1.2rem !important;
+    }
+    .semana-title {
+        font-size: 1.2rem !important;
+    }
+    .semana-desc {
+        font-size: 0.85rem !important;
+    }
+    .semana-actions {
+        flex-direction: column !important;
+    }
+    .semana-btn {
+        width: 100% !important;
+    }
+
+    /* Contact */
+    .contact-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .contact-card {
+        padding: 35px 25px !important;
+    }
+    .contact-card i {
+        font-size: 2rem !important;
+    }
+    .contact-card h3 {
+        font-size: 1.1rem !important;
+    }
+
+    /* Footer */
+    .jjk-footer {
+        padding: 30px 15px !important;
+    }
+    .jjk-footer p {
+        font-size: 0.85rem !important;
+    }
+
+    /* Logos */
+    .logo-instituto {
+        width: 70px !important;
+        height: 70px !important;
+    }
+    .logo-top-left {
+        top: 5px !important;
+        left: 65px !important;
+    }
+    .logo-top-right {
+        top: 5px !important;
+        right: 10px !important;
+    }
+
+    /* Typography */
+    .jjk-title {
+        font-size: 1.5rem !important;
+        letter-spacing: 4px !important;
+    }
+    .jjk-subtitle {
+        font-size: 0.75rem !important;
+        letter-spacing: 5px !important;
+    }
+    .nombre-maldito {
+        font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+    }
+
+    /* Music player */
+    .jjk-music-sidebar {
+        padding: 15px 0 !important;
+        gap: 8px !important;
+    }
+    .music-toggle {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 0.8rem !important;
+    }
+    .music-label {
+        font-size: 0.55rem !important;
+    }
+
+    /* Video background */
+    .video-bg {
+        opacity: 0.3 !important;
+    }
+}
+
+/* ===== SMALL MOBILE (hasta 480px) ===== */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: clamp(1.6rem, 9vw, 2.2rem) !important;
+        letter-spacing: 3px !important;
+    }
+    .hero-typing {
+        font-size: 0.75rem !important;
+        letter-spacing: 2px !important;
+    }
+    .hero-desc {
+        font-size: 0.8rem !important;
+    }
+    .stat-number {
+        font-size: 2rem !important;
+    }
+    .stat-label {
+        font-size: 0.7rem !important;
+    }
+    .jjk-btn {
+        padding: 12px 22px !important;
+        font-size: 0.75rem !important;
+    }
+    .about-info h2 {
+        font-size: 1.4rem !important;
+    }
+    .semana-num {
+        font-size: 2rem !important;
+    }
+    .semana-title {
+        font-size: 1rem !important;
+    }
+    .logo-instituto {
+        width: 55px !important;
+        height: 55px !important;
+    }
+    .logo-top-left {
+        left: 55px !important;
+    }
+    .jjk-sidebar {
+        width: 50px !important;
+    }
+    .jjk-sidebar:hover {
+        width: 200px !important;
+    }
+    .main-content {
+        margin-left: 50px !important;
+    }
+    .jjk-nav-item {
+        padding: 12px 10px !important;
+    }
+    .jjk-nav-item i {
+        font-size: 1.1rem !important;
+        width: 24px !important;
+    }
+}
+
+/* ===== LANDSCAPE MOBILE ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero-section {
+        min-height: auto !important;
+        padding: 60px 15px 40px !important;
+    }
+    .hero-stats {
+        flex-direction: row !important;
+        gap: 15px !important;
+    }
+    .stat-item {
+        padding: 15px 20px !important;
+    }
+    .hero-title {
+        font-size: 2rem !important;
+    }
+}
+
+/* ===== TOUCH DEVICES - OPTIMIZACIONES ===== */
+@media (pointer: coarse) {
+    .jjk-btn, .semana-btn, .jjk-nav-item, .music-toggle {
+        min-height: 44px !important;
+    }
+    .jjk-sidebar:hover {
+        width: 260px !important;
+    }
+}

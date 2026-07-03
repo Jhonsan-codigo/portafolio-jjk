@@ -1,24 +1,37 @@
-package servlets;
+package com.zonajava.servlets;
 
 import java.io.IOException;
-import jakarta.servlet.ServletException;        // ← CAMBIADO
-import jakarta.servlet.annotation.WebServlet;   // ← CAMBIADO
-import jakarta.servlet.http.HttpServlet;        // ← CAMBIADO
-import jakarta.servlet.http.HttpServletRequest; // ← CAMBIADO
-import jakarta.servlet.http.HttpServletResponse;  // ← CAMBIADO
-import jakarta.servlet.http.HttpSession;        // ← CAMBIADO
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/ChangePasswordServlet"})
+@WebServlet("/ChangePasswordServlet")
 public class ChangePasswordServlet extends HttpServlet {
+
+    private static final String DB_URL = System.getenv("DB_URL") != null ? 
+        System.getenv("DB_URL") : "jdbc:mysql://localhost:3306/portafolio_jjk";
+    private static final String DB_USER = System.getenv("DB_USER") != null ? 
+        System.getenv("DB_USER") : "root";
+    private static final String DB_PASSWORD = System.getenv("DB_PASSWORD") != null ? 
+        System.getenv("DB_PASSWORD") : "";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Verificar que esté logueado como admin
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("login.jsp");
+        if (session == null || session.getAttribute("admin") == null) {
+            response.sendRedirect("login.jsp?redirect=ChangePasswordServlet");
             return;
         }
+
         request.getRequestDispatcher("change-password.jsp").forward(request, response);
     }
 
@@ -26,48 +39,57 @@ public class ChangePasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("usuario") == null) {
+        if (session == null || session.getAttribute("admin") == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        String currentPass = request.getParameter("currentPassword");
-        String newPass = request.getParameter("newPassword");
-        String confirmPass = request.getParameter("confirmPassword");
+        String currentPassword = request.getParameter("currentPassword");
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+        String email = (String) session.getAttribute("admin");
 
-        String storedPass = (String) session.getAttribute("storedPass");
-        if (storedPass == null) storedPass = "1234";
-
-        if (currentPass == null || currentPass.trim().isEmpty() ||
-            newPass == null || newPass.trim().isEmpty() ||
-            confirmPass == null || confirmPass.trim().isEmpty()) {
-            request.setAttribute("error", "Todos los campos son obligatorios.");
+        if (!newPassword.equals(confirmPassword)) {
+            request.setAttribute("error", "Las contraseñas no coinciden");
             request.getRequestDispatcher("change-password.jsp").forward(request, response);
             return;
         }
 
-        if (!currentPass.equals(storedPass)) {
-            request.setAttribute("error", "La contraseña actual es incorrecta.");
-            request.getRequestDispatcher("change-password.jsp").forward(request, response);
-            return;
-        }
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-        if (!newPass.equals(confirmPass)) {
-            request.setAttribute("error", "Las contraseñas no coinciden.");
-            request.getRequestDispatcher("change-password.jsp").forward(request, response);
-            return;
-        }
+            // Verificar contraseña actual
+            String verifySql = "SELECT * FROM usuarios WHERE email = ? AND password = ?";
+            PreparedStatement verifyStmt = conn.prepareStatement(verifySql);
+            verifyStmt.setString(1, email);
+            verifyStmt.setString(2, currentPassword);
 
-        if (newPass.length() < 4) {
-            request.setAttribute("error", "Mínimo 4 caracteres.");
-            request.getRequestDispatcher("change-password.jsp").forward(request, response);
-            return;
-        }
+            if (!verifyStmt.executeQuery().next()) {
+                request.setAttribute("error", "Contraseña actual incorrecta");
+                request.getRequestDispatcher("change-password.jsp").forward(request, response);
+                return;
+            }
 
-        session.setAttribute("storedPass", newPass);
-        request.setAttribute("success", "¡Contraseña actualizada! Tu energía maldita ha sido renovada.");
-        request.getRequestDispatcher("change-password.jsp").forward(request, response);
+            // Actualizar contraseña
+            String updateSql = "UPDATE usuarios SET password = ? WHERE email = ?";
+            PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+            updateStmt.setString(1, newPassword);
+            updateStmt.setString(2, email);
+            updateStmt.executeUpdate();
+
+            request.setAttribute("success", "Contraseña actualizada correctamente");
+            request.getRequestDispatcher("change-password.jsp").forward(request, response);
+
+            updateStmt.close();
+            verifyStmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error: " + e.getMessage());
+            request.getRequestDispatcher("change-password.jsp").forward(request, response);
+        }
     }
 }

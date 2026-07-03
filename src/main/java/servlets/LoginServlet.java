@@ -1,67 +1,91 @@
-package servlets;
+package com.zonajava.servlets;
 
 import java.io.IOException;
-import jakarta.servlet.ServletException;        // ← CAMBIADO
-import jakarta.servlet.annotation.WebServlet;   // ← CAMBIADO
-import jakarta.servlet.http.HttpServlet;        // ← CAMBIADO
-import jakarta.servlet.http.HttpServletRequest; // ← CAMBIADO
-import jakarta.servlet.http.HttpServletResponse;  // ← CAMBIADO
-import jakarta.servlet.http.HttpSession;        // ← CAMBIADO
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
-    private static final String DEFAULT_USER = "admin";
-    private static final String DEFAULT_PASS = "1234";
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("usuario") != null) {
-            response.sendRedirect("index.jsp");
-        } else {
-            response.sendRedirect("login.jsp");
-        }
-    }
+    // Configuración de la base de datos (usar variables de entorno en Render)
+    private static final String DB_URL = System.getenv("DB_URL") != null ? 
+        System.getenv("DB_URL") : "jdbc:mysql://localhost:3306/portafolio_jjk";
+    private static final String DB_USER = System.getenv("DB_USER") != null ? 
+        System.getenv("DB_USER") : "root";
+    private static final String DB_PASSWORD = System.getenv("DB_PASSWORD") != null ? 
+        System.getenv("DB_PASSWORD") : "";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String redirect = request.getParameter("redirect");
 
-        if (email == null || email.trim().isEmpty() ||
-            password == null || password.trim().isEmpty()) {
-            request.setAttribute("error", "Completa todos los campos hechicero.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
+        // Si no hay redirect, ir al admin por defecto
+        if (redirect == null || redirect.isEmpty()) {
+            redirect = "admin.jsp";
         }
 
-        HttpSession session = request.getSession();
-        String storedUser = (String) session.getAttribute("storedUser");
-        String storedPass = (String) session.getAttribute("storedPass");
+        try {
+            // Cargar driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-        if (storedUser == null) storedUser = DEFAULT_USER;
-        if (storedPass == null) storedPass = DEFAULT_PASS;
+            // Conectar a la base de datos
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-        boolean usuarioValido = email.equalsIgnoreCase(storedUser) ||
-                                 email.toLowerCase().contains(storedUser.toLowerCase());
-        boolean passValida = password.equals(storedPass);
+            // Consulta para verificar credenciales
+            String sql = "SELECT * FROM usuarios WHERE email = ? AND password = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            stmt.setString(2, password); // En producción usar hash
 
-        if (usuarioValido && passValida) {
-            session.setAttribute("usuario", storedUser);
-            session.setAttribute("email", email);
-            session.setAttribute("rol", "admin");
-            session.setAttribute("loginTime", new java.util.Date().toString());
-            session.setAttribute("storedUser", storedUser);
-            session.setAttribute("storedPass", storedPass);
-            response.sendRedirect("index.jsp");
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // Login exitoso - crear sesión como admin
+                HttpSession session = request.getSession();
+                session.setAttribute("admin", email);
+                session.setAttribute("rol", rs.getString("rol"));
+                session.setAttribute("nombre", rs.getString("nombre"));
+
+                // Redirigir a la página solicitada
+                response.sendRedirect(redirect);
+            } else {
+                // Login fallido
+                request.setAttribute("error", "Correo o contraseña incorrectos");
+                request.getRequestDispatcher("login.jsp?redirect=" + redirect).forward(request, response);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error de conexión: " + e.getMessage());
+            request.getRequestDispatcher("login.jsp?redirect=" + redirect).forward(request, response);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Si ya está logueado, redirigir al admin
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("admin") != null) {
+            response.sendRedirect("admin.jsp");
         } else {
-            request.setAttribute("error", "Energía maldita incorrecta. Verifica tus credenciales.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            response.sendRedirect("login.jsp");
         }
     }
 }
