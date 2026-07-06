@@ -1,3 +1,11 @@
+<%
+    // Protección: si no está logueado, redirigir al login
+    if (session.getAttribute("admin") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     // Verificar si está logueado como admin
@@ -144,12 +152,21 @@
                     <i class="fas fa-arrow-right"></i> Acceder
                 </a>
             </div>
+            
+            <div class="admin-card">
+    <i class="fas fa-folder-open"></i>
+    <h3>Gestionar Archivos</h3>
+    <p style="color: #B0B0C0; margin-bottom: 15px;">Sube, visualiza y elimina imágenes del portafolio.</p>
+    <a href="GestionArchivosServlet" class="admin-btn">
+        <i class="fas fa-arrow-right"></i> Acceder
+    </a>
+</div>
 
             <div class="admin-card">
                 <i class="fas fa-chart-line"></i>
                 <h3>Estadísticas</h3>
                 <p style="color: #B0B0C0; margin-bottom: 15px;">Ver visitas, ejercicios completados y métricas.</p>
-                <a href="EstadisticasServlet" class="admin-btn">
+                <a href="AdminEstadisticasServlet" class="admin-btn">
                     <i class="fas fa-arrow-right"></i> Acceder
                 </a>
             </div>

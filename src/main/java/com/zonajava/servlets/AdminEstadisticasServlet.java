@@ -7,12 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/AdminEstadisticasServlet")
 public class AdminEstadisticasServlet extends HttpServlet {
@@ -40,37 +40,31 @@ public class AdminEstadisticasServlet extends HttpServlet {
             
             Map<String, Object> stats = new HashMap<>();
             
-            // Total visitas
             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) as total FROM visitas");
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) stats.put("total_visitas", rs.getInt("total"));
             rs.close(); stmt.close();
             
-            // Visitas hoy
             stmt = conn.prepareStatement("SELECT COUNT(*) as total FROM visitas WHERE DATE(fecha) = CURDATE()");
             rs = stmt.executeQuery();
             if (rs.next()) stats.put("visitas_hoy", rs.getInt("total"));
             rs.close(); stmt.close();
             
-            // Total ejercicios completados
             stmt = conn.prepareStatement("SELECT COUNT(*) as total FROM ejercicios_completados");
             rs = stmt.executeQuery();
             if (rs.next()) stats.put("total_ejercicios", rs.getInt("total"));
             rs.close(); stmt.close();
             
-            // Total semanas activas
             stmt = conn.prepareStatement("SELECT COUNT(*) as total FROM semanas WHERE estado = 'activo'");
             rs = stmt.executeQuery();
             if (rs.next()) stats.put("semanas_activas", rs.getInt("total"));
             rs.close(); stmt.close();
             
-            // Total usuarios
             stmt = conn.prepareStatement("SELECT COUNT(*) as total FROM usuarios");
             rs = stmt.executeQuery();
             if (rs.next()) stats.put("total_usuarios", rs.getInt("total"));
             rs.close(); stmt.close();
             
-            // Visitas por página
             stmt = conn.prepareStatement("SELECT pagina, COUNT(*) as total FROM visitas GROUP BY pagina ORDER BY total DESC LIMIT 10");
             rs = stmt.executeQuery();
             Map<String, Integer> visitasPorPagina = new HashMap<>();

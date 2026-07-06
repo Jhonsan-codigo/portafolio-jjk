@@ -105,7 +105,7 @@
 
             <div class="hero-stats">
                 <div class="stat-item">
-                    <div class="stat-number">11</div>
+                    <div class="stat-number">15</div>
                     <div class="stat-label">Semanas</div>
                 </div>
                 <div class="stat-item">

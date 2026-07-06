@@ -1,7 +1,19 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    // Si ya está logueado, redirigir al admin directamente
+    if (session.getAttribute("admin") != null) {
+        response.sendRedirect("admin.jsp");
+        return;
+    }
+
     String redirect = request.getParameter("redirect");
     if (redirect == null) redirect = "admin.jsp";
+    
+    // Obtener mensaje de error detallado si existe
+    String errorDetalle = (String) session.getAttribute("errorDetalle");
+    if (errorDetalle != null) {
+        session.removeAttribute("errorDetalle");
+    }
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -79,6 +91,16 @@
             border-color: var(--jjk-sukuna-bright, #FF1A1A);
             box-shadow: 0 0 15px rgba(139,0,0,0.2);
         }
+        
+        .error-detail {
+            color: #FF8C00;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(255,140,0,0.1);
+            border-radius: 5px;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -136,10 +158,24 @@
                     </div>
                 </div>
 
-                <% if(request.getAttribute("error") != null) { %>
+                <% 
+                    String errorCode = request.getParameter("error");
+                    if(errorCode != null) {
+                        String errorMsg = "";
+                        if("1".equals(errorCode)) errorMsg = "Correo o contraseña incorrectos";
+                        else if("2".equals(errorCode)) errorMsg = "Error de conexión con la base de datos";
+                        else if("empty".equals(errorCode)) errorMsg = "Complete todos los campos";
+                        else errorMsg = "Error desconocido";
+                %>
                 <div class="error-message" id="errorMsg">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <%= request.getAttribute("error") %>
+                    <i class="fas fa-exclamation-triangle"></i> <%= errorMsg %>
+                </div>
+                <% } %>
+
+                <% if(errorDetalle != null) { %>
+                <div class="error-detail">
+                    <i class="fas fa-bug"></i> <strong>Detalle técnico:</strong><br>
+                    <%= errorDetalle %>
                 </div>
                 <% } %>
 

@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/RegistrarVisitaServlet")
 public class RegistrarVisitaServlet extends HttpServlet {
@@ -48,7 +48,6 @@ public class RegistrarVisitaServlet extends HttpServlet {
             e.printStackTrace();
         }
         
-        // Responder con imagen transparente 1x1 (pixel de tracking)
         response.setContentType("image/gif");
         response.getOutputStream().write(new byte[]{0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x3B});
     }

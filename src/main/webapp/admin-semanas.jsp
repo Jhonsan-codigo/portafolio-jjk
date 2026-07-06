@@ -1,3 +1,11 @@
+<%
+    // Protección: si no está logueado, redirigir al login
+    if (session.getAttribute("admin") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
