@@ -38,8 +38,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
 
             // Buscar por EMAIL (tu tabla usa 'email', no 'username')
             String sql = "SELECT * FROM usuarios WHERE email = ? AND password = ?";

@@ -31,8 +31,7 @@ public class RegistrarVisitaServlet extends HttpServlet {
         String userAgent = request.getHeader("User-Agent");
         
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             String sql = "INSERT INTO visitas (pagina, ip, user_agent) VALUES (?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);

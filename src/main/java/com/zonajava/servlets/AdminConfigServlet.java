@@ -35,8 +35,7 @@ public class AdminConfigServlet extends HttpServlet {
         }
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             Map<String, String> config = new HashMap<>();
             String sql = "SELECT clave, valor FROM configuracion";
@@ -74,8 +73,7 @@ public class AdminConfigServlet extends HttpServlet {
         String valor = request.getParameter("valor");
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             String sql = "UPDATE configuracion SET valor = ? WHERE clave = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);

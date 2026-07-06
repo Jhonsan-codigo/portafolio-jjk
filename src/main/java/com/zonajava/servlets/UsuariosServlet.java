@@ -35,8 +35,7 @@ public class UsuariosServlet extends HttpServlet {
         List<String[]> usuarios = new ArrayList<>();
         
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             String sql = "SELECT id, nombre, email, rol, created_at FROM usuarios";
             PreparedStatement stmt = conn.prepareStatement(sql);

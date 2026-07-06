@@ -61,8 +61,7 @@ public class ChangePasswordServlet extends HttpServlet {
         String email = (String) session.getAttribute("email");
         
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             // Verificar contraseña actual
             String verifySql = "SELECT * FROM usuarios WHERE email = ? AND password = ?";

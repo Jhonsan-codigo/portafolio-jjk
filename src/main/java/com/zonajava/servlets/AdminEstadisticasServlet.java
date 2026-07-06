@@ -35,8 +35,7 @@ public class AdminEstadisticasServlet extends HttpServlet {
         }
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             Map<String, Object> stats = new HashMap<>();
             

@@ -88,8 +88,7 @@ public class DatabaseServlet extends HttpServlet {
     private List<Map<String, String>> cargarTablas() {
         List<Map<String, String>> tablas = new ArrayList<>();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             DatabaseMetaData meta = conn.getMetaData();
             ResultSet rs = meta.getTables("portafolio_jjk", null, "%", new String[]{"TABLE"});
             
@@ -149,8 +148,7 @@ public class DatabaseServlet extends HttpServlet {
         boolean esSelect = consulta.toUpperCase().startsWith("SELECT");
         
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             if (esSelect) {
                 PreparedStatement stmt = conn.prepareStatement(consulta);
@@ -195,8 +193,7 @@ public class DatabaseServlet extends HttpServlet {
     
     private void vaciarTabla(String tabla) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             String sql = "TRUNCATE TABLE " + tabla;
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.executeUpdate();

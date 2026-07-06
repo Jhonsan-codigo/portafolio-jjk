@@ -57,8 +57,7 @@ public class EditarContenidoServlet extends HttpServlet {
         String action = request.getParameter("action");
         
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             if ("guardarConfig".equals(action)) {
                 // Guardar configuración general
@@ -109,8 +108,7 @@ public class EditarContenidoServlet extends HttpServlet {
     private Map<String, String> cargarConfiguracion() {
         Map<String, String> config = new HashMap<>();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             String sql = "SELECT clave, valor FROM configuracion";
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -133,8 +131,7 @@ public class EditarContenidoServlet extends HttpServlet {
     private List<Map<String, String>> cargarSemanas() {
         List<Map<String, String>> semanas = new ArrayList<>();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             String sql = "SELECT id, numero, titulo, descripcion, activa FROM semanas ORDER BY numero";
             PreparedStatement stmt = conn.prepareStatement(sql);

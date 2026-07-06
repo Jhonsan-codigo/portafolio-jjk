@@ -16,14 +16,18 @@
     </properties>
     
     <dependencies>
-        <!-- MySQL Connector - SE EMPAQUETA EN EL WAR (sin scope provided) -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
         
-        <!-- Jakarta Servlet API 6.0 para Tomcat 11 -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.1</version>
+        </dependency>
+        
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>

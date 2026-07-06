@@ -37,8 +37,7 @@ public class AdminSemanasServlet extends HttpServlet {
         }
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
             
             List<Map<String, Object>> semanas = new ArrayList<>();
             String sql = "SELECT * FROM semanas ORDER BY numero";
@@ -86,8 +85,7 @@ public class AdminSemanasServlet extends HttpServlet {
         String action = request.getParameter("action");
         
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+Connection conn = ConexionDB.getConnection();
 
             if ("add".equals(action)) {
                 String sql = "INSERT INTO semanas (numero, titulo, descripcion, icono, imagen, tema, poder, tiene_ejercicios, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
