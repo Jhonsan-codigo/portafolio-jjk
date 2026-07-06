@@ -121,7 +121,7 @@
     <div class="admin-container">
         <div class="admin-header">
             <span class="jjk-subtitle">Panel de Control</span>
-            <h1 class="jjk-title">ADMINISTRACIÓN <span class="jjk-text-gradient">HECHICERA</span></h1>
+            <h1 class="jjk-title">ADMINISTRACIÓN <span class="jjk-text-gradient">DE HECHICERIA</span></h1>
             <p style="color: #B0B0C0; margin-top: 15px;">Bienvenido al panel de administración. Solo tú puedes acceder aquí.</p>
         </div>
 
