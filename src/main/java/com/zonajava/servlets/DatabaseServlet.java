@@ -2,7 +2,6 @@ package com.zonajava.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,10 +19,6 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/DatabaseServlet")
 public class DatabaseServlet extends HttpServlet {
-    
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/portafolio_jjk";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -88,9 +83,9 @@ public class DatabaseServlet extends HttpServlet {
     private List<Map<String, String>> cargarTablas() {
         List<Map<String, String>> tablas = new ArrayList<>();
         try {
-Connection conn = ConexionDB.getConnection();
+            Connection conn = ConexionDB.getConnection();
             DatabaseMetaData meta = conn.getMetaData();
-            ResultSet rs = meta.getTables("portafolio_jjk", null, "%", new String[]{"TABLE"});
+            ResultSet rs = meta.getTables(null, null, "%", new String[]{"TABLE"});
             
             while (rs.next()) {
                 Map<String, String> t = new HashMap<>();
@@ -109,8 +104,7 @@ Connection conn = ConexionDB.getConnection();
     
     private void cargarContenidoTabla(String tabla, List<String> columnas, List<List<String>> filas) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            Connection conn = ConexionDB.getConnection();
             
             String sql = "SELECT * FROM " + tabla + " LIMIT 100";
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -148,7 +142,7 @@ Connection conn = ConexionDB.getConnection();
         boolean esSelect = consulta.toUpperCase().startsWith("SELECT");
         
         try {
-Connection conn = ConexionDB.getConnection();
+            Connection conn = ConexionDB.getConnection();
             
             if (esSelect) {
                 PreparedStatement stmt = conn.prepareStatement(consulta);
@@ -193,7 +187,7 @@ Connection conn = ConexionDB.getConnection();
     
     private void vaciarTabla(String tabla) {
         try {
-Connection conn = ConexionDB.getConnection();
+            Connection conn = ConexionDB.getConnection();
             String sql = "TRUNCATE TABLE " + tabla;
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.executeUpdate();
