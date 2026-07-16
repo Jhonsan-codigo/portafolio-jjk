@@ -46,14 +46,13 @@
                 <i class="fas fa-envelope"></i>
                 <span class="jjk-nav-text">Contacto</span>
             </a>
-            <!-- Link al panel admin (solo visible si sabes la URL) -->
             <a href="admin.jsp" class="jjk-nav-item" style="margin-top: 20px; border-top: 1px solid rgba(139,0,0,0.2); padding-top: 15px;">
                 <i class="fas fa-cog"></i>
                 <span class="jjk-nav-text">Admin</span>
             </a>
         </div>
 
-        <!-- ====== REPRODUCTOR DE MUSICA ====== -->
+        <!-- REPRODUCTOR DE MUSICA -->
         <div class="jjk-music-sidebar">
             <div class="music-equalizer" id="musicVisualizer">
                 <span></span><span></span><span></span><span></span>
@@ -64,7 +63,6 @@
             </button>
             <input type="range" class="music-volume-slider" min="0" max="1" step="0.1" value="0.3" onchange="setVolume(this.value)" title="Volumen">
         </div>
-        <!-- ====== FIN REPRODUCTOR ====== -->
 
         <div class="jjk-sidebar-footer">
             <div class="curse-mark">呪</div>
@@ -79,10 +77,10 @@
 
     <!-- Logos del instituto -->
     <div class="logo-instituto logo-top-left">
-        <img src="assets/logo1.jpg" alt="Logo IESTP" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class='fas fa-shield-alt' style='color:#FF1A1A; font-size:2.5rem;'></i>';">
+        <img src="assets/logo1.jpg" alt="Logo IESTP" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-shield-alt\' style=\'color:#FF1A1A; font-size:2.5rem;\'></i>';">
     </div>
     <div class="logo-instituto logo-top-right">
-        <img src="assets/logo2.jpg" alt="Logo DPW" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class='fas fa-code' style='color:#FF1A1A; font-size:2.5rem;'></i>';">
+        <img src="assets/logo2.jpg" alt="Logo DPW" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-code\' style=\'color:#FF1A1A; font-size:2.5rem;\'></i>';">
     </div>
 
     <!-- CONTENIDO PRINCIPAL -->
@@ -105,7 +103,7 @@
 
             <div class="hero-stats">
                 <div class="stat-item">
-                    <div class="stat-number">15</div>
+                    <div class="stat-number">14</div>
                     <div class="stat-label">Semanas</div>
                 </div>
                 <div class="stat-item">
@@ -205,7 +203,8 @@ String[][] semanasData = {
     {"10", "fa-crown", "PROYECTO INTEGRADOR", "Maestría", "Jujutsu.jpg", "Hechicero Especial", "si"},
     {"11", "fa-infinity", "OPTIMIZACIÓN, DEPLOY", "Infinito", "Kaisen.jpg", "Six Eyes", "si"},
     {"12", "fa-server", "HOSTING JAVA GRATUITO", "Despliegue", "Gojo.jpg", "Dominio Infinito", "no"},
-    {"13", "fa-book-open", "PORTAFOLIO ESTUDIANTIL", "Documentación", "Sukuna.jpg", "Shrine Final", "no"}
+    {"13", "fa-book-open", "PORTAFOLIO ESTUDIANTIL", "Documentación", "Sukuna.jpg", "Shrine Final", "no"},
+    {"14", "fa-clipboard-check", "SISTEMA DE CONTROL DE ASISTENCIA", "Gestión", "Gojo.jpg", "Dominio de Registro", "no"}
 };
 
 for(int i = 0; i < semanasData.length; i++) {
@@ -235,14 +234,24 @@ for(int i = 0; i < semanasData.length; i++) {
         <div class="semana-power">
             <i class="fas fa-fire"></i> <%= poder %>
         </div>
-        <p class="semana-desc">
-            <%= desc %>. Domina el nivel <%= num %> de entrenamiento hechicero.
-        </p>
+<p class="semana-desc">
+    <%= desc %>. Domina el nivel <%= num %> de entrenamiento hechicero.
+    <% if(num.equals("14")) { %>
+    <br><br>
+    <span style="color: #FF1A1A; font-size: 0.85rem;">
+        <i class="fas fa-user-shield"></i> <strong>Acceso:</strong> admin / admin123
+    </span>
+    <% } %>
+</p>
         <div class="semana-actions">
             <% if(tieneEjercicios.equals("si")) { %>
             <button class="semana-btn semana-btn-primary">
                 <i class="fas fa-play"></i> Ejecutar
             </button>
+            <% } else if(num.equals("14")) { %>
+            <a href="https://sistema-asistencia-cajas.onrender.com" target="_blank" class="semana-btn semana-btn-primary" onclick="event.stopPropagation();">
+                <i class="fas fa-globe"></i> Sistema
+            </a>
             <% } %>
             <a href="manuales/Manual<%= num %>.pdf" target="_blank" class="semana-btn semana-btn-secondary" onclick="event.stopPropagation();">
                 <i class="fas fa-book"></i> Manual
@@ -340,18 +349,12 @@ for(int i = 0; i < semanasData.length; i++) {
 
         document.addEventListener('DOMContentLoaded', escribir);
 
-        // Solo aplicar preventDefault a los items de navegación interna (anclas #)
-        // Los enlaces a servlets NO deben tener preventDefault
         document.querySelectorAll('.jjk-nav-item').forEach(item => {
             item.addEventListener('click', (e) => {
                 const href = item.getAttribute('href');
-
-                // Si es un enlace a servlet o admin (no empieza con #), dejar que navegue normalmente
                 if (!href || !href.startsWith('#')) {
-                    return; // No hacer nada, dejar que el enlace funcione normalmente
+                    return;
                 }
-
-                // Solo para anclas internas (#inicio, #sobre-mi, etc.)
                 e.preventDefault();
                 const target = document.querySelector(href);
                 if (target) {
@@ -369,7 +372,6 @@ for(int i = 0; i < semanasData.length; i++) {
             }, 600);
         }
 
-        // ====== FUNCIONES DE MUSICA ======
         let bgMusic = document.getElementById('bgMusic');
         let musicBtn = document.getElementById('sidebarMusicBtn');
         let isPlaying = false;
@@ -401,11 +403,9 @@ for(int i = 0; i < semanasData.length; i++) {
             }
         }
 
-        // Iniciar con volumen bajo
         if (bgMusic) {
             bgMusic.volume = 0.3;
         }
-        // ====== FIN FUNCIONES DE MUSICA ======
     </script>
 
 </body>

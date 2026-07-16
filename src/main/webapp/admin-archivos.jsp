@@ -168,7 +168,7 @@
 <body>
     <a href="admin.jsp" class="back"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
     <h1><i class="fas fa-folder-open"></i> Gestión de Archivos</h1>
-    <p class="subtitle">Sube, visualiza y elimina imágenes, videos y audio del portafolio</p>
+    <p class="subtitle">Sube, visualiza y elimina imágenes del portafolio</p>
 
     <% if (mensaje != null) { %>
     <div class="mensaje-exito"><i class="fas fa-check-circle"></i> <%= mensaje %></div>
@@ -187,9 +187,9 @@
                 <label for="archivo" class="upload-label">
                     <i class="fas fa-cloud-upload-alt"></i>
                     <div>Arrastra archivos aquí o haz click para seleccionar</div>
-                    <div style="font-size:0.8rem; margin-top:10px; color:#666;">JPG, PNG, GIF, WEBP, MP4, MP3 (máx 10MB)</div>
+                    <div style="font-size:0.8rem; margin-top:10px; color:#666;">JPG, PNG, GIF, WEBP (máx 10MB)</div>
                 </label>
-                <input type="file" name="archivo" id="archivo" class="upload-input" accept="image/*,video/*,audio/*" required>
+                <input type="file" name="archivo" id="archivo" class="upload-input" accept="image/*" required>
             </div>
             <div style="text-align:center;">
                 <button type="submit" class="btn-subir"><i class="fas fa-upload"></i> Subir Archivo</button>
@@ -211,10 +211,6 @@
                 <div class="archivo-preview">
                     <% if ("imagen".equals(tipo)) { %>
                     <img src="<%= ruta %>" alt="<%= nombre %>" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-file-image\' style=\'color:#8B0000\'></i>';">
-                    <% } else if ("video".equals(tipo)) { %>
-                    <i class="fas fa-file-video" style="color:#FF1A1A;"></i>
-                    <% } else if ("audio".equals(tipo)) { %>
-                    <i class="fas fa-file-audio" style="color:#FF1A1A;"></i>
                     <% } else if ("pdf".equals(tipo)) { %>
                     <i class="fas fa-file-pdf" style="color:#FF1A1A;"></i>
                     <% } else { %>
